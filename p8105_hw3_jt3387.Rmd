@@ -5,6 +5,8 @@ output: github_document
   
 ```{r, message = FALSE}
 library(tidyverse)
+library(ggridges)
+library(patchwork)
 library(p8105.datasets)
 ```
 
@@ -215,8 +217,37 @@ ny_noaa %>%
   geom_point() +
   geom_smooth() +
   labs(x = "Year", y = "Average Max Temperature",
-       title = "Average max temperature in January and in July in each station from 1981 to 2010") +
+       title = "Average max temperature in January and in July from 1981 to 2010") +
+  theme(legend.position = "bottom") +
   facet_grid(.~month)
+
 ```
 
 - From the plot, we can see that the average max temperature in January from 1980 to 2010 was approximately fluctuating around 0 degree C on a ten-year cycle, while in July the average max temperature was approximately fluctuating around 27 degree C slightly. There are many outliers in the data, like the lowest temperature point in January in 1982 and lowest temperature point in July in 1988.
+
+Make a two-panel plot showing: 
+
+(i) tmax vs tmin for the full dataset (note that a scatterplot may not be the best option);
+
+(ii) make a plot showing the distribution of snowfall values greater than 0 and less than 100 separately by year.
+
+```{r warning = FALSE, message = FALSE}
+tmax_tmin <- ny_noaa %>%
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_hex() + 
+  labs(x = "Minimum temperature (degrees C)", y = "Maximum temperature (degrees C)", 
+       title = "tmax vs tmin for the full dataset") +
+  theme(legend.text = element_text(size = 5), legend.position = "bottom")
+
+snowfall_dis <- ny_noaa %>%
+  filter(snow > 0 & snow < 100) %>%
+  mutate(year = as.character(year)) %>%
+  ggplot(aes(x = snow, y = year, fill = year)) +
+  geom_density_ridges(alpha = .7, scale = .5) +
+  labs(x = "Snowfall (mm)",y = "Year", title = "Distribution of snowfall by year") +
+  theme(legend.position = "none")
+
+tmax_tmin+snowfall_dis
+```
+
+- From the first plot, we can see that there are lots of points on which the min temperature is around 15 degrees C while the max temperature is around 22 degrees C, and min temperature is around 0 degrees C while the max temperature is around 3 degrees C. The distribution of points is concentrated, and there are also some outliers. From the second plot, which shows the distribution of the snowfall between 0 and 100, we can see that the overall distribution from different years didn't change much, and most of the snowfall amounts are concentrated around 10 mm, 23mm, and 50mm.
