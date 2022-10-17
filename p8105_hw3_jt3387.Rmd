@@ -18,4 +18,10 @@ instacart = instacart %>%
   as_tibble(instacart)
 ```
   
+Brief discription of the dataset:
+
+- This dataset contains `r nrow(instacart)` rows and `r ncol(instacart)` columns.
+
+- The dataset contains following variables: ``r names(instacart)``, and some key variables are: `order_id` represents the order identifier, `product_id` represents the product identifier, `user_id` represents the customer identifier, `aisle_id` represents the aisle identifier, `department_id` represents the department identifier.
   
+- In total, there are `r instacart %>% select(product_id) %>% distinct %>% count` products found in `r instacart %>% select(user_id, order_id) %>% distinct %>% count` orders from `r instacart %>% select(user_id) %>% distinct %>% count` distinct users.
