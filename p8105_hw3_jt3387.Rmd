@@ -64,7 +64,7 @@ instacart %>%
 
 Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week.
 
-```{r}
+```{r message = FALSE}
 instacart %>%
   filter(product_name %in% c("Pink Lady Apples", "Coffee Ice Cream")) %>%
   group_by(product_name, order_dow) %>%
@@ -73,3 +73,23 @@ instacart %>%
   knitr::kable(digits = 2)
 ```
 
+## Problem 2
+
+Load, tidy, and wrangle the data.
+
+```{r message = FALSE}
+accel_df <- 
+  read_csv("data/accel_data.csv") %>% 
+  janitor::clean_names() %>% 
+  pivot_longer(
+    activity_1:activity_1440,
+    names_prefix = "activity_",
+    names_to = "minute",
+    values_to = "activity"
+  ) %>% 
+  mutate(
+    minute = as.numeric(minute),
+    dow = ifelse(day %in% c('Saturday', 'Sunday'), "weekend", "weekday")
+  ) %>% 
+  relocate(week, day_id, day, dow)
+```
