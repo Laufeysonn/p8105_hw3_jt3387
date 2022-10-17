@@ -109,3 +109,17 @@ total_act <-
   summarize(sum_activity = sum(activity))
 ```
 
+Create a table showing the totals.
+
+```{r}
+total_act %>% 
+  pivot_wider(
+    names_from = "day",
+    values_from = "sum_activity"
+  ) %>% 
+  relocate(1, 5, 3, 7, 8, 6, 2, 4) %>% 
+  knitr::kable(
+    caption = "Total activity over a day",
+    align = "l"
+  )
+```
