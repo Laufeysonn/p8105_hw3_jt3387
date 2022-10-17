@@ -99,3 +99,13 @@ Brief discription of the resulting dataset:
 - The data contains `r nrow(accel_df)` rows and `r ncol(accel_df)` columns.
 
 - There are 7 variables in the data set: `week` represents the week number from 1 to 5, `day_id` shows the id of each day ranging from 1 to 35, `day` shows what day of the week it is, `dow` shows whether the day is a weekday or weekend, `minite` represents every minute within a 24-hour day ranging from 1 to 1440, `activity` shows the activity counts for each minute of a 24-hour day starting at midnight, and its min value is ``r min(pull(accel_df, activity))`` and max value is ``r max(pull(accel_df, activity))``.
+
+Analyses of the data focus on the total activity over the day.
+
+```{r message = FALSE}
+total_act <- 
+  accel_df %>% 
+  group_by(week, day) %>% 
+  summarize(sum_activity = sum(activity))
+```
+
