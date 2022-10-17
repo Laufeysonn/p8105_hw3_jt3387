@@ -2,12 +2,30 @@
 title: "p8105_hw3_jt3387"
 output: github_document
 ---
-  
-```{r, message = FALSE}
+
+```{r setup, include = FALSE}
 library(tidyverse)
 library(ggridges)
 library(patchwork)
 library(p8105.datasets)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
 ## Problem 1
@@ -218,9 +236,7 @@ ny_noaa %>%
   geom_smooth() +
   labs(x = "Year", y = "Average Max Temperature",
        title = "Average max temperature in January and in July from 1981 to 2010") +
-  theme(legend.position = "bottom") +
   facet_grid(.~month)
-
 ```
 
 - From the plot, we can see that the average max temperature in January from 1980 to 2010 was approximately fluctuating around 0 degree C on a ten-year cycle, while in July the average max temperature was approximately fluctuating around 27 degree C slightly. There are many outliers in the data, like the lowest temperature point in January in 1982 and lowest temperature point in July in 1988.
@@ -237,7 +253,7 @@ tmax_tmin <- ny_noaa %>%
   geom_hex() + 
   labs(x = "Minimum temperature (degrees C)", y = "Maximum temperature (degrees C)", 
        title = "tmax vs tmin for the full dataset") +
-  theme(legend.text = element_text(size = 5), legend.position = "bottom")
+  theme(legend.text = element_text(size = 5))
 
 snowfall_dis <- ny_noaa %>%
   filter(snow > 0 & snow < 100) %>%
