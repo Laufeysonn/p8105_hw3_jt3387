@@ -34,7 +34,7 @@ Load the dataset:
 
 ```{r}
 data("instacart")
-instacart = instacart %>% 
+instacart <- instacart %>% 
   as_tibble(instacart)
 ```
   
@@ -98,15 +98,14 @@ instacart %>%
 Load, tidy, and wrangle the data.
 
 ```{r message = FALSE}
-accel_df <- 
-  read_csv("data/accel_data.csv") %>% 
+accel_df <- read_csv("data/accel_data.csv") %>% 
   janitor::clean_names() %>% 
   pivot_longer(
     activity_1:activity_1440,
     names_prefix = "activity_",
     names_to = "minute",
     values_to = "activity"
-  ) %>% 
+    ) %>% 
   mutate(
     minute = as.numeric(minute),
     dow = ifelse(day %in% c('Saturday', 'Sunday'), "weekend", "weekday")
@@ -114,7 +113,7 @@ accel_df <-
   relocate(week, day_id, day, dow)
 ```
 
-Brief discription of the resulting dataset:
+Brief description of the resulting dataset:
 
 - The data contains `r nrow(accel_df)` rows and `r ncol(accel_df)` columns.
 
@@ -123,8 +122,7 @@ Brief discription of the resulting dataset:
 Analyses of the data focus on the total activity over the day.
 
 ```{r message = FALSE}
-total_act <- 
-  accel_df %>% 
+total_act <- accel_df %>% 
   group_by(week, day) %>% 
   summarize(sum_activity = sum(activity))
 ```
@@ -172,7 +170,7 @@ accel_df %>%
   )
 ```
 
-- From the plot, we can see that the activity counts are much lower from 11:00 pm to 5:00 am in the midnight and early morning, whichcorresponds to the sleep time, and the high activity counts are concentrated from 9:00 am to 12:00 am and 8:00 pm to 10:00 pm. Then a moderate activity counts appears from 4:00 pm to 5:00 pm.
+- From the plot, we can see that the activity counts are much lower from 11:00 pm to 5:00 am in the midnight and early morning, and the high activity counts are concentrated from 9:00 am to 12:00 am and 8:00 pm to 10:00 pm. Then the moderate activity counts appears from 4:00 pm to 5:00 pm.
 
 ## Problem 3
 
@@ -207,10 +205,11 @@ ny_noaa <- ny_noaa %>%
     prcp = prcp/10,
     year = as.numeric(year),
     month = as.numeric(month),
-    day = as.numeric(day))
+    day = as.numeric(day)
+    )
 ```
 
-- We should divide `tmin`, `tmax`, `prcp` by 10 to keep them in  degrees C and mm. Then as we convert `tmin`, `tmax` into numeric before, we will also convert `year`, `month`, `day` into numeric format. 
+- We should divide `tmin`, `tmax`, `prcp` by 10 to keep them in  degrees C and mm. Then as we convert `tmin`, `tmax` variables into numeric before, we will also convert `year`, `month`, `day` into numeric format to facilitate subsequent data analysis. 
 
 Quantitative analysis of snowfall.
 
@@ -221,7 +220,7 @@ ny_noaa %>%
   arrange(desc(snowfall_obs))
 ```
 
-- Therefore, the most commonly observed values for snowfall is 0. Because snow only occurs in some of the winter days, most of the time in a year there is no snowfall.
+- Therefore, the most commonly observed values for snowfall is 0 mm. Because snow only occurs in some of the winter days, most of the time in a year there is no snowfall.
 
 Make a two-panel plot showing the average max temperature in January and in July in each station across years.
 
@@ -263,7 +262,7 @@ snowfall_dis <- ny_noaa %>%
   labs(x = "Snowfall (mm)",y = "Year", title = "Distribution of snowfall by year") +
   theme(legend.position = "none")
 
-tmax_tmin+snowfall_dis
+tmax_tmin + snowfall_dis
 ```
 
-- From the first plot, we can see that there are lots of points on which the min temperature is around 15 degrees C while the max temperature is around 22 degrees C, and min temperature is around 0 degrees C while the max temperature is around 3 degrees C. The distribution of points is concentrated, and there are also some outliers. From the second plot, which shows the distribution of the snowfall between 0 and 100, we can see that the overall distribution from different years didn't change much, and most of the snowfall amounts are concentrated around 10 mm, 23mm, and 50mm.
+- From the left plot, we can see that there are lots of points on which the min temperature is around 15 degrees C while the max temperature is around 22 degrees C, and min temperature is around 0 degrees C while the max temperature is around 3 degrees C. The distribution of points is concentrated, but there are also some outliers. From the right plot, which shows the distribution of the snowfall between 0 and 100, we can see that the overall distribution from different years didn't change much, and most of the snowfall amounts are concentrated around 10 mm, 23mm, and 50mm.
